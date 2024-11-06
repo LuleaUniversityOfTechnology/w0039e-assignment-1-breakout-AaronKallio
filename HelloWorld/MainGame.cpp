@@ -7,7 +7,7 @@
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
-	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
+
 	SpawnBall();
 }
 
@@ -15,13 +15,16 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cBlack );
-	
+
 	Play::PresentDrawingBuffer();
-	return StepFrame(elapsedTime);
+	StepFrame(elapsedTime);
+	return 0;
+	//return StepFrame(elapsedTime);
 	//return Play::KeyDown( KEY_ESCAPE );
 }
 
 // Gets called once when the player quits the game 
 int MainGameExit(void){
 	Play::DestroyManager();
+	return 0;
 }
