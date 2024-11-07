@@ -7,3 +7,5 @@
 enum ObjectType {
 	TYPE_BALL
 };
+
+float ballSpeed = 6;
