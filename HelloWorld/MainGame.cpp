@@ -9,6 +9,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
 
 	SpawnBall();
+	setupScene();
 }
 
 // Called by PlayBuffer every frame (60 times a second!)

@@ -20,6 +20,15 @@ void SpawnBall() {
 		const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 		for (int i = 0; i < ballIds.size(); i++) {
 			GameObject& ball = Play::GetGameObject(ballIds[i]);
+			//if (Play::IsLeavingDisplayArea(ball, Play::VERTICAL)) {
+			if (ball.pos.x > DISPLAY_WIDTH || ball.pos.x < 0) {
+				ball.velocity.x = ball.velocity.x * -1;
+			}
+			//if (Play::IsLeavingDisplayArea(ball, Play::HORIZONTAL)) {
+			if (ball.pos.y > DISPLAY_HEIGHT || ball.pos.y < 0) {
+				ball.velocity.y = ball.velocity.y * -1;
+				
+			}
 			Play::UpdateGameObject(ball);
 			Play::DrawObject(ball);
 			Play::PresentDrawingBuffer();
@@ -28,4 +37,23 @@ void SpawnBall() {
 		
 		}
 		
+	}
+
+	void SetupScene() {
+		int x = 20;
+		int y = DISPLAY_HEIGHT - 20;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 10; j++) {
+				Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
+				x += 10;
+			}
+			y += 10;
+
+		}
+	
+	
+	
+	
+	
+	
 	}

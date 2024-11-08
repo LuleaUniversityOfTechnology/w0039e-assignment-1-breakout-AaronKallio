@@ -5,3 +5,4 @@
 #include "Play.h"
 void SpawnBall();
 void StepFrame(float elapsedTime);
+void setupScene();
