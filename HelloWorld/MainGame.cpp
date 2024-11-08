@@ -1,15 +1,13 @@
 #include "game.h"
 
-#define DISPLAY_WIDTH 640
-#define DISPLAY_HEIGHT 360
-#define DISPLAY_SCALE 2
+
 
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
-
+	
 	SpawnBall();
-	setupScene();
+	SetupScene();
 }
 
 // Called by PlayBuffer every frame (60 times a second!)

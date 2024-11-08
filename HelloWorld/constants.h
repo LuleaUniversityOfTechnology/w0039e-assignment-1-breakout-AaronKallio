@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 //bruh test
 #define DISPLAY_WIDTH 960
 #define DISPLAY_HEIGHT 640
@@ -11,4 +11,4 @@ enum ObjectType {
 };
 
 
-float ballSpeed = 6;
+const float ballSpeed = 6;

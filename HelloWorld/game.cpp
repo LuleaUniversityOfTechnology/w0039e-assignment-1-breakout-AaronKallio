@@ -32,6 +32,7 @@ void SpawnBall() {
 			Play::UpdateGameObject(ball);
 			Play::DrawObject(ball);
 			Play::PresentDrawingBuffer();
+		
 			
 				
 		
