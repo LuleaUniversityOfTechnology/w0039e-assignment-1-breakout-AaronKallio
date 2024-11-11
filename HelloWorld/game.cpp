@@ -8,7 +8,7 @@
 
 void SpawnBall() {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
-	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 60 }, 4, "ball");
+	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 240 }, 4, "ball");
 	
 	GameObject& ball = Play::GetGameObject(objectId);
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
@@ -29,26 +29,47 @@ void SpawnBall() {
 				ball.velocity.y = ball.velocity.y * -1;
 				
 			}
-			Play::UpdateGameObject(ball);
-			Play::DrawObject(ball);
-			Play::PresentDrawingBuffer();
-		
+		Play::UpdateGameObject(ball);
+		Play::DrawObject(ball);
 			
-				
-		
+
 		}
-		
+
+		const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
+		for (int i = 0; i < brickIds.size(); i++) {
+			GameObject& brick = Play::GetGameObject(brickIds[i]);
+			//Play::UpdateGameObject(brick);
+			//Play::DrawObject(brick);
+			//Play::PresentDrawingBuffer();
+
+
+			for (int j = 0; j < ballIds.size(); j++) {
+				GameObject& ball = Play::GetGameObject(ballIds[j]);
+				if (Play::IsColliding(ball,brick) == TRUE) {
+					Play::DestroyGameObject(i);
+					
+					ball.velocity.y = ball.velocity.y * -1;
+				
+				}
+
+			}
+			Play::UpdateGameObject(brick);
+			Play::DrawObject(brick);
+
+		}
+		Play::PresentDrawingBuffer();
 	}
 
 	void SetupScene() {
-		int x = 20;
-		int y = DISPLAY_HEIGHT - 20;
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 10; j++) {
+		int x = 50;
+		int y = DISPLAY_HEIGHT - 120;
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 43; j++) {
 				Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
-				x += 10;
+				x += 20;
 			}
-			y += 10;
+			y += 12;
+			x = 50;
 
 		}
 	
