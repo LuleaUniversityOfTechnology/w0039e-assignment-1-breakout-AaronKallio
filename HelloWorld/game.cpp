@@ -8,7 +8,7 @@
 
 void SpawnBall() {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
-	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 240 }, 4, "ball");
+	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 240 }, 4, "ball");//DISPLAY_WIDTH / 2
 	
 	GameObject& ball = Play::GetGameObject(objectId);
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
@@ -30,7 +30,10 @@ void SpawnBall() {
 				
 			}
 		Play::UpdateGameObject(ball);
-		Play::DrawObject(ball);
+		Play::DrawObject(ball);		
+		Play::PresentDrawingBuffer();
+
+
 			
 
 		}
@@ -42,19 +45,23 @@ void SpawnBall() {
 			//Play::DrawObject(brick);
 			//Play::PresentDrawingBuffer();
 
+			Play::UpdateGameObject(brick);
+			Play::DrawObject(brick);
 
 			for (int j = 0; j < ballIds.size(); j++) {
 				GameObject& ball = Play::GetGameObject(ballIds[j]);
-				if (Play::IsColliding(ball,brick) == TRUE) {
+				if (Play::IsColliding(Play::GetGameObject(brickIds[i]),ball)) {
 					Play::DestroyGameObject(i);
 					
 					ball.velocity.y = ball.velocity.y * -1;
+					
 				
 				}
 
 			}
-			Play::UpdateGameObject(brick);
-			Play::DrawObject(brick);
+
+		
+
 
 		}
 		Play::PresentDrawingBuffer();
