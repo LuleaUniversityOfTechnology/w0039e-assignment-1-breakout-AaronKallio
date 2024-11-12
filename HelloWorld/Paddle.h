@@ -5,6 +5,8 @@
 struct Paddle {
 	int x;
 	int y;
+	int height = 16;
+	int width = 128;
 };
 
 extern Paddle paddle;

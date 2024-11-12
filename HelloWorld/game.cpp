@@ -77,7 +77,7 @@ void SpawnBall() {
 	void SetupScene() {
 		int x = 50;
 		int y = DISPLAY_HEIGHT - 120;
-		for (int i = 0; i < 70; i++) {
+		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 43; j++) {
 				Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
 				x += 20;
@@ -86,10 +86,6 @@ void SpawnBall() {
 			x = 50;
 
 		}
-	
-	
-	
-	
-	
-	
 	}
+
+	
