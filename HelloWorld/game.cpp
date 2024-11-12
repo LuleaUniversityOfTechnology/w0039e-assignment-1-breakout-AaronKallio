@@ -6,6 +6,8 @@
 #include "game.h"
 #include "constants.h"
 
+#include "Paddle.h"
+
 void SpawnBall() {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 240 }, 4, "ball");//DISPLAY_WIDTH / 2
@@ -17,6 +19,11 @@ void SpawnBall() {
 }
 
 	void StepFrame(float elapsedTime) {
+
+		UpdatePaddle(paddle);
+		DrawPaddle(paddle);
+
+
 		const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 		for (int i = 0; i < ballIds.size(); i++) {
 			GameObject& ball = Play::GetGameObject(ballIds[i]);
@@ -60,7 +67,7 @@ void SpawnBall() {
 
 			}
 
-		
+			
 
 
 		}
@@ -70,7 +77,7 @@ void SpawnBall() {
 	void SetupScene() {
 		int x = 50;
 		int y = DISPLAY_HEIGHT - 120;
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 70; i++) {
 			for (int j = 0; j < 43; j++) {
 				Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
 				x += 20;
