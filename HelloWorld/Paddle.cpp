@@ -30,6 +30,22 @@ void UpdatePaddle(Paddle& paddle) {
 
 }
 
-//bool IsColliding(Paddle paddle, ) {
 
-//}
+int Max(int number1, int number2) {
+	int result = (number1 > number2) ? number1 : number2;
+	return result;
+
+}
+
+int Min(int number1, int number2) {
+	int result = (number1 < number2) ? number1 : number2;
+	return result;
+
+}
+
+bool IsColliding(const Paddle& paddle, const Play::GameObject& obj) {
+	const float dx = obj.pos.x - Max(paddle.x, Min(obj.pos.x, paddle.x+paddle.width));
+	const float dy = obj.pos.y - Max(paddle.y+paddle.height, Min(obj.pos.y, paddle.y));
+	return (dx * dx + dy * dy) < (obj.radius * obj.radius);
+
+}

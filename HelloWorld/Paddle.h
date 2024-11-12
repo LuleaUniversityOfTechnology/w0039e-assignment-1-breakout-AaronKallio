@@ -13,3 +13,4 @@ extern Paddle paddle;
 
 void DrawPaddle(struct Paddle&);
 void UpdatePaddle(struct Paddle&);
+bool IsColliding(const Paddle& paddle, const Play::GameObject& obj);

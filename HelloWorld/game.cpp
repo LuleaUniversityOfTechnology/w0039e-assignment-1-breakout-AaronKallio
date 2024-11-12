@@ -10,7 +10,7 @@
 
 void SpawnBall() {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
-	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 240 }, 4, "ball");//DISPLAY_WIDTH / 2
+	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { 200, DISPLAY_HEIGHT - 240 }, 4, "ball");//DISPLAY_WIDTH / 2
 	
 	GameObject& ball = Play::GetGameObject(objectId);
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
@@ -23,7 +23,8 @@ void SpawnBall() {
 		UpdatePaddle(paddle);
 		DrawPaddle(paddle);
 
-
+		//int random = RandomRollRange(0.6,2);
+		
 		const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 		for (int i = 0; i < ballIds.size(); i++) {
 			GameObject& ball = Play::GetGameObject(ballIds[i]);
@@ -32,9 +33,15 @@ void SpawnBall() {
 				ball.velocity.x = ball.velocity.x * -1;
 			}
 			//if (Play::IsLeavingDisplayArea(ball, Play::HORIZONTAL)) {
-			if (ball.pos.y > DISPLAY_HEIGHT || ball.pos.y < 0) {
+			//if (ball.pos.y > DISPLAY_HEIGHT || ball.pos.y < 0) {
+			if (ball.pos.y > DISPLAY_HEIGHT) {
 				ball.velocity.y = ball.velocity.y * -1;
 				
+			}
+
+			if (IsColliding(paddle,ball)) {
+				ball.velocity.y = ball.velocity.y-5 * -1;
+				Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "bounce");
 			}
 		Play::UpdateGameObject(ball);
 		Play::DrawObject(ball);		
@@ -71,6 +78,9 @@ void SpawnBall() {
 
 
 		}
+
+
+
 		Play::PresentDrawingBuffer();
 	}
 
