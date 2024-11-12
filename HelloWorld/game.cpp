@@ -51,7 +51,7 @@ void SpawnBall() {
 			for (int j = 0; j < ballIds.size(); j++) {
 				GameObject& ball = Play::GetGameObject(ballIds[j]);
 				if (Play::IsColliding(Play::GetGameObject(brickIds[i]),ball)) {
-					Play::DestroyGameObject(i);
+					Play::DestroyGameObject(brickIds[i]);
 					
 					ball.velocity.y = ball.velocity.y * -1;
 					
