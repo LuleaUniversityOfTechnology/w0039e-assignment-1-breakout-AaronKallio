@@ -7,7 +7,20 @@
 #include "constants.h"
 #include "Paddle.h"
 int currentScore = 0;
-int highscoresArray[5] = { 5,4,3,2,1 };
+//int highscoresArray[5] = { 5,4,3,2,1 };
+
+int* highscoresArray = new int[5];
+
+void assignArray() {
+	int count = 5;
+	for (int i = 0; i<= 5; i++) {
+		highscoresArray[i] = count;
+		count--;
+	}
+}
+
+
+
 bool lost = false;
 void SpawnBall() { 
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE); //creates the game screen
@@ -15,6 +28,7 @@ void SpawnBall() {
 	
 	GameObject& ball = Play::GetGameObject(objectId);
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
+	assignArray();
 
 }
 

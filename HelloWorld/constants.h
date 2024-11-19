@@ -13,5 +13,4 @@ enum ObjectType {
 
 
 
-
 const float ballSpeed = 6;

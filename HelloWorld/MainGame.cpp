@@ -6,6 +6,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
 	SpawnBall();
 	SetupScene();
+	
 }
 //std::string score = std::to_string(highscoresArray[0]);
 //const char* scoreOutput = score.c_str();
