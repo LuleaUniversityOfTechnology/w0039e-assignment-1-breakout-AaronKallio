@@ -20,13 +20,17 @@ bool MainGameUpdate( float elapsedTime )
 	StepFrame(elapsedTime);
 
 	//Play::DrawDebugText({ 100, 100 }, scoreOutput);
+
 	
-	return 0;
+	return Play::KeyDown(Play::KeyboardButton::KEY_ESCAPE);
 	
 }
 
 // Gets called once when the player quits the game 
 int MainGameExit(void){
+	int linecount = lineCount();
+	ExitFunction(linecount);
 	Play::DestroyManager();
-	return 0;
+
+	return PLAY_OK;
 }

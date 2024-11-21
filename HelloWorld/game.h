@@ -6,3 +6,5 @@ void SpawnBall();
 void SetupScene();
 void StepFrame(float elapsedTime);
 void assignArray();
+int lineCount();
+void ExitFunction(int linecount);
