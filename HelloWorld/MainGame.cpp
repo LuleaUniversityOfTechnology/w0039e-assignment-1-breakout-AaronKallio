@@ -15,9 +15,10 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cBlack );
-	Play::PresentDrawingBuffer();
+	
 	
 	StepFrame(elapsedTime);
+	Play::PresentDrawingBuffer();
 
 	//Play::DrawDebugText({ 100, 100 }, scoreOutput);
 

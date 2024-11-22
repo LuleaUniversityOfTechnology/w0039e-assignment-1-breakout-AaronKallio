@@ -79,33 +79,7 @@ void SpawnBall() {
 
 	void StepFrame(float elapsedTime) { //runs 60 times per second
 
-		std::string score1 = std::to_string(highscoresArray[0]);
-		const char* scoreOutput1 = score1.c_str();
-		std::string score2 = std::to_string(highscoresArray[1]);
-		const char* scoreOutput2 = score2.c_str();
-		std::string score3 = std::to_string(highscoresArray[2]);
-		const char* scoreOutput3 = score3.c_str();
-		std::string score4 = std::to_string(highscoresArray[3]);
-		const char* scoreOutput4 = score4.c_str();
-		std::string score5 = std::to_string(highscoresArray[4]);
-		const char* scoreOutput5 = score5.c_str();
-
-		std::string score = std::to_string(currentScore);
-		const char* scoreOutput = score.c_str();
-
-		std::string line = std::to_string(lineCount());
-		const char* lineOutput = line.c_str();
 		
-
-		Play::DrawDebugText({ 930, 100 }, scoreOutput1);
-		Play::DrawDebugText({ 930, 85 }, scoreOutput2);
-		Play::DrawDebugText({ 930, 70 }, scoreOutput3);
-		Play::DrawDebugText({ 930, 55 }, scoreOutput4);
-		Play::DrawDebugText({ 930, 40 }, scoreOutput5);
-		Play::DrawDebugText({ 500, 500 }, lineOutput);
-
-
-		Play::DrawDebugText({ 30, 40 }, scoreOutput);
 		//moves the paddle if needed and then draws it 
 		UpdatePaddle(paddle);
 		DrawPaddle(paddle);
@@ -130,25 +104,42 @@ void SpawnBall() {
 
 			//if ball hits the bottom, display game over
 			if(ball.pos.y < 0){
-				//Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOST!!!");
+				//int linecount = lineCount();
+				sort(highscoresArray, highscoresArray + linecount, comp);
 				if (currentScore > highscoresArray[4]) {
-					highscoresArray[4] = currentScore;
-					sort(highscoresArray, highscoresArray + lineCount(), comp);
+					highscoresArray[linecount - 1] = currentScore;
+					sort(highscoresArray, highscoresArray + linecount, comp);
 				}
-					currentScore = 0;
-					Play::DestroyGameObject(ballIds[i]);
-					const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
-					for (int j = 0; j < brickIds.size(); j++) {
-						Play::DestroyGameObject(brickIds[j]);
-					}
-					
-					
-					ofstream scoreFile("scores.txt");
-					for (int k = 0; k < lineCount();k++) {
-						scoreFile << highscoresArray[k] << "\n";
-					}
+				
+				//remove("scores.txt");
+				//fstream scoreFile("scores.txt");
+				
+				//for (int k = 0; k < linecount-1; k++) {
+				//	scoreFile << highscoresArray[k] << "\n";
+				//}
+				//scoreFile << highscoresArray[linecount];
+				//Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOST!!!");
 
-					scoreFile.close();
+				//delete highscoresArray;
+				//linecount = lineCount();
+				//int* highscoresArray = new int[linecount];
+				//assignArray();
+				sort(highscoresArray, highscoresArray + linecount, comp);
+				
+				currentScore = 0;
+				Play::DestroyGameObject(ballIds[i]);
+				const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
+				for (int j = 0; j < brickIds.size(); j++) {
+					Play::DestroyGameObject(brickIds[j]);
+				}
+					
+					
+					//ofstream scoreFile("scores.txt");
+					//for (int k = 0; k < lineCount();k++) {
+					//	scoreFile << highscoresArray[k] << "\n";
+					//}
+
+				//	scoreFile.close();
 
 
 					
@@ -170,7 +161,7 @@ void SpawnBall() {
 			//updates and draws the ball
 		Play::UpdateGameObject(ball);
 		Play::DrawObject(ball);		
-		Play::PresentDrawingBuffer();
+		//Play::PresentDrawingBuffer();
 		}
 
 		//goes through each brick 
@@ -195,7 +186,34 @@ void SpawnBall() {
 
 		}
 		//updates everything on screen
-		Play::PresentDrawingBuffer();
+		std::string score1 = std::to_string(highscoresArray[0]);
+		const char* scoreOutput1 = score1.c_str();
+		std::string score2 = std::to_string(highscoresArray[1]);
+		const char* scoreOutput2 = score2.c_str();
+		std::string score3 = std::to_string(highscoresArray[2]);
+		const char* scoreOutput3 = score3.c_str();
+		std::string score4 = std::to_string(highscoresArray[3]);
+		const char* scoreOutput4 = score4.c_str();
+		std::string score5 = std::to_string(highscoresArray[4]);
+		const char* scoreOutput5 = score5.c_str();
+
+		std::string score = std::to_string(currentScore);
+		const char* scoreOutput = score.c_str();
+
+		std::string line = std::to_string(lineCount());
+		const char* lineOutput = line.c_str();
+
+
+		Play::DrawDebugText({ 930, 100 }, scoreOutput1);
+		Play::DrawDebugText({ 930, 85 }, scoreOutput2);
+		Play::DrawDebugText({ 930, 70 }, scoreOutput3);
+		Play::DrawDebugText({ 930, 55 }, scoreOutput4);
+		Play::DrawDebugText({ 930, 40 }, scoreOutput5);
+		Play::DrawDebugText({ 500, 500 }, lineOutput);
+
+
+		Play::DrawDebugText({ 30, 40 }, scoreOutput);
+		//Play::PresentDrawingBuffer();
 
 
 		//if (Play::KeyPressed(Play::KEY_SPACE) == true) {
@@ -213,9 +231,10 @@ void SpawnBall() {
 
 	void ExitFunction(int linecount) {
 		fstream scoreFile("scores.txt");
-		for (int k = 0; k < linecount; k++) {
-			scoreFile << highscoresArray[k] << "\n";
+		for (int k = 0; k < linecount-2; k++) {
+			scoreFile << highscoresArray[k]  << "\n";
 		}
+		scoreFile << highscoresArray[linecount-1];
 		scoreFile.close();
 		delete highscoresArray;
 	}
