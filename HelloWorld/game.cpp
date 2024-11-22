@@ -10,19 +10,13 @@
 #include <fstream>
 #include <string>
 int currentScore = 0;
-//int highscoresArray[5] = { 5,4,3,2,1 };
 
-//int number_of_lines = 0;
-//std::string line;
-//std::fstream myfile("scores.txt");
-
-//while (std::getline(myfile, line)) {
-//	++number_of_lines;
-//}
+//used to reverse the sort into decending order
 bool comp(int a, int b) {
 	return a > b;
 }
 
+//counts how many lines in the text file
 int lineCount() {
 	int number_of_lines = 0;
 	std::string line;
@@ -37,54 +31,40 @@ int lineCount() {
 
 
 int linecount = lineCount();
+//creates dynamic array
 int* highscoresArray = new int[linecount];
 
+//adds scores from file to array
 void assignArray() {
-	
 	int count = lineCount();
-	
 	int loopCount = 0;
 	fstream scoreFile("scores.txt");
 	std::string score;
-
 	while (std::getline(scoreFile, score)) {
 		highscoresArray[loopCount] = stoi(score);
 		loopCount++;
-		//cout << score << endl;
 	}
 	sort(highscoresArray, highscoresArray + count, comp);
 	scoreFile.close();
-	//for (int i = 0; i<= loopCount; i++) {
-	//	highscoresArray[i] = count;
-	//	count--;
-	//}
+
 
 }
 
-
-
-
 void SpawnBall() { 
-	
 	assignArray();
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE); //creates the game screen
 	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { 200, DISPLAY_HEIGHT - 240 }, 4, "ball"); //creates the ball
-	
 	GameObject& ball = Play::GetGameObject(objectId);
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
 	
 
 }
-
-
 	void StepFrame(float elapsedTime) { //runs 60 times per second
 
-		
 		//moves the paddle if needed and then draws it 
 		UpdatePaddle(paddle);
 		DrawPaddle(paddle);
 
-		
 		//accesses the ball 
 		const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 		for (int i = 0; i < ballIds.size(); i++) {
@@ -94,76 +74,41 @@ void SpawnBall() {
 				ball.velocity.x = ball.velocity.x * -1;
 			}
 			 
-			//if (ball.pos.y > DISPLAY_HEIGHT || ball.pos.y < 0) {  // code for bouncing on the bottom too
-			//bounces ball on the top of the screen
 			if (ball.pos.y > DISPLAY_HEIGHT) {
 				ball.velocity.y = ball.velocity.y * -1;
 			}
 
-
-
 			//if ball hits the bottom, display game over
-			if(ball.pos.y < 0){
-				//int linecount = lineCount();
+			if(ball.pos.y < 0){   
 				sort(highscoresArray, highscoresArray + linecount, comp);
-				if (currentScore > highscoresArray[4]) {
+				//adds current score to the array
+				if (currentScore > highscoresArray[4]) { 
 					highscoresArray[linecount - 1] = currentScore;
 					sort(highscoresArray, highscoresArray + linecount, comp);
 				}
-				
-				//remove("scores.txt");
-				//fstream scoreFile("scores.txt");
-				
-				//for (int k = 0; k < linecount-1; k++) {
-				//	scoreFile << highscoresArray[k] << "\n";
-				//}
-				//scoreFile << highscoresArray[linecount];
-				//Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOST!!!");
-
-				//delete highscoresArray;
-				//linecount = lineCount();
-				//int* highscoresArray = new int[linecount];
-				//assignArray();
+	
 				sort(highscoresArray, highscoresArray + linecount, comp);
-				
+				//resets everything
 				currentScore = 0;
 				Play::DestroyGameObject(ballIds[i]);
 				const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
 				for (int j = 0; j < brickIds.size(); j++) {
 					Play::DestroyGameObject(brickIds[j]);
 				}
-					
-					
-					//ofstream scoreFile("scores.txt");
-					//for (int k = 0; k < lineCount();k++) {
-					//	scoreFile << highscoresArray[k] << "\n";
-					//}
-
-				//	scoreFile.close();
-
-
-					
+				
 					const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { 200, DISPLAY_HEIGHT - 240 }, 4, "ball"); //creates the ball
 					GameObject& ball = Play::GetGameObject(objectId);
 					ball.velocity = normalize({ 1, -1 }) * ballSpeed;
 					SetupScene();
-					
-
-
 			}
-
 			//if the ball collides with the paddle, bounces the ball 
 			if (IsColliding(paddle,ball)) {
-				//ball.velocity.y = ball.velocity.y-5 * -1; //adds some variation to the bounces 
 				ball.velocity.y = ball.velocity.y * -1;
-				//Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "bounce");
 			}
 			//updates and draws the ball
 		Play::UpdateGameObject(ball);
 		Play::DrawObject(ball);		
-		//Play::PresentDrawingBuffer();
 		}
-
 		//goes through each brick 
 		const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
 		for (int i = 0; i < brickIds.size(); i++) {
@@ -179,11 +124,8 @@ void SpawnBall() {
 					currentScore += 1;
 					//changes velocity of ball on hit
 					ball.velocity.y = ball.velocity.y * -1;
-
 				}
-
 			}
-
 		}
 		//updates everything on screen
 		std::string score1 = std::to_string(highscoresArray[0]);
@@ -196,49 +138,25 @@ void SpawnBall() {
 		const char* scoreOutput4 = score4.c_str();
 		std::string score5 = std::to_string(highscoresArray[4]);
 		const char* scoreOutput5 = score5.c_str();
-
 		std::string score = std::to_string(currentScore);
 		const char* scoreOutput = score.c_str();
-
-		std::string line = std::to_string(lineCount());
-		const char* lineOutput = line.c_str();
-
-
 		Play::DrawDebugText({ 930, 100 }, scoreOutput1);
 		Play::DrawDebugText({ 930, 85 }, scoreOutput2);
 		Play::DrawDebugText({ 930, 70 }, scoreOutput3);
 		Play::DrawDebugText({ 930, 55 }, scoreOutput4);
 		Play::DrawDebugText({ 930, 40 }, scoreOutput5);
-		Play::DrawDebugText({ 500, 500 }, lineOutput);
-
-
 		Play::DrawDebugText({ 30, 40 }, scoreOutput);
-		//Play::PresentDrawingBuffer();
-
-
-		//if (Play::KeyPressed(Play::KEY_SPACE) == true) {
-		//	ofstream scoreFile("scores.txt");
-		//	for (int k = 0; k < lineCount(); k++) {
-		//		scoreFile << highscoresArray[k] << "\n";
-		//	}
-		//	scoreFile.close();
-		//	delete highscoresArray;
-
-		//}
-			
-
 	}
-
+	//adds scores to file and deletes array
 	void ExitFunction(int linecount) {
+		sort(highscoresArray, highscoresArray + linecount, comp);
 		fstream scoreFile("scores.txt");
-		for (int k = 0; k < linecount-2; k++) {
+		for (int k = 0; k < linecount-1; k++) {
 			scoreFile << highscoresArray[k]  << "\n";
 		}
-		scoreFile << highscoresArray[linecount-1];
 		scoreFile.close();
 		delete highscoresArray;
 	}
-
 	//sets up the bricks in a 7x43 grid pattern
 	void SetupScene() {
 		int x = 50;
