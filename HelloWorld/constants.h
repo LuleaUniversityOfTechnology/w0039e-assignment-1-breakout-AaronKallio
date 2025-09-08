@@ -2,7 +2,7 @@
 //sets values that are used throughout the code and files
 #define DISPLAY_WIDTH 960
 #define DISPLAY_HEIGHT 640
-#define DISPLAY_SCALE 2
+#define DISPLAY_SCALE 1
 enum ObjectType { 
 	TYPE_BALL,
 	TYPE_BRICK

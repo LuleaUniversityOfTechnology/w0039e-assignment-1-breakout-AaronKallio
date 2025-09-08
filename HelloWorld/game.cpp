@@ -29,10 +29,27 @@ int lineCount() {
 	return number_of_lines;
 }
 
+int* resizeArray(int* arr, int oldSize, int newSize) {
+	int* newArr = new int[newSize];
+	for (int i = 0; i < oldSize && i < newSize; i++) {
+		newArr[i] = arr[i];
+	}
+	delete[] arr; // free old memory
+	return newArr;
+}
+
 
 int linecount = lineCount();
 //creates dynamic array
 int* highscoresArray = new int[linecount];
+
+int displayArray [5];
+
+void createScoreArray() {
+	for (int i = 0; i < 4; i++) {
+		displayArray[i] = 0;
+	}
+}
 
 //adds scores from file to array
 void assignArray() {
@@ -51,16 +68,24 @@ void assignArray() {
 }
 
 void SpawnBall() { 
+	createScoreArray();
 	assignArray();
+	int displayScoreAmount;
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE); //creates the game screen
 	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { 200, DISPLAY_HEIGHT - 240 }, 4, "ball"); //creates the ball
 	GameObject& ball = Play::GetGameObject(objectId);
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
-	
-
+	if (linecount < 5) {
+		displayScoreAmount = linecount;
+	}
+	else {
+		displayScoreAmount = 5;
+	}
+	for (int i = 0; i < displayScoreAmount; i++) {
+		displayArray[i] = highscoresArray[i];
+	}
 }
 	void StepFrame(float elapsedTime) { //runs 60 times per second
-
 		//moves the paddle if needed and then draws it 
 		UpdatePaddle(paddle);
 		DrawPaddle(paddle);
@@ -80,14 +105,30 @@ void SpawnBall() {
 
 			//if ball hits the bottom, display game over
 			if(ball.pos.y < 0){   
-				sort(highscoresArray, highscoresArray + linecount, comp);
+				//sort(highscoresArray, highscoresArray + linecount, comp);
 				//adds current score to the array
-				if (currentScore > highscoresArray[4]) { 
-					highscoresArray[linecount - 1] = currentScore;
-					sort(highscoresArray, highscoresArray + linecount, comp);
-				}
-	
+				//if (currentScore > highscoresArray[4]) { 
+				//	highscoresArray[linecount - 1] = currentScore;
+				//	sort(highscoresArray, highscoresArray + linecount, comp);
+				//}
+				//sort(highscoresArray, highscoresArray + linecount, comp);
+
+				highscoresArray = resizeArray(highscoresArray,linecount, linecount + 1);
+				linecount++;
+				highscoresArray[linecount - 1] = currentScore;
 				sort(highscoresArray, highscoresArray + linecount, comp);
+				int displayScoreAmount;
+				if (linecount < 5) {
+					displayScoreAmount = linecount;
+				}
+				else {
+					displayScoreAmount = 5;
+				}
+				for (int i = 0; i < displayScoreAmount; i++) {
+					displayArray[i] = highscoresArray[i];
+				}
+				
+
 				//resets everything
 				currentScore = 0;
 				Play::DestroyGameObject(ballIds[i]);
@@ -128,15 +169,16 @@ void SpawnBall() {
 			}
 		}
 		//updates everything on screen
-		std::string score1 = std::to_string(highscoresArray[0]);
+		//sort(displayArray, displayArray + 5, comp);
+		std::string score1 = std::to_string(displayArray[0]);
 		const char* scoreOutput1 = score1.c_str();
-		std::string score2 = std::to_string(highscoresArray[1]);
+		std::string score2 = std::to_string(displayArray[1]);
 		const char* scoreOutput2 = score2.c_str();
-		std::string score3 = std::to_string(highscoresArray[2]);
+		std::string score3 = std::to_string(displayArray[2]);
 		const char* scoreOutput3 = score3.c_str();
-		std::string score4 = std::to_string(highscoresArray[3]);
+		std::string score4 = std::to_string(displayArray[3]);
 		const char* scoreOutput4 = score4.c_str();
-		std::string score5 = std::to_string(highscoresArray[4]);
+		std::string score5 = std::to_string(displayArray[4]);
 		const char* scoreOutput5 = score5.c_str();
 		std::string score = std::to_string(currentScore);
 		const char* scoreOutput = score.c_str();
@@ -146,6 +188,10 @@ void SpawnBall() {
 		Play::DrawDebugText({ 930, 55 }, scoreOutput4);
 		Play::DrawDebugText({ 930, 40 }, scoreOutput5);
 		Play::DrawDebugText({ 30, 40 }, scoreOutput);
+
+		std::string test = std::to_string(linecount);
+		const char* icle = test.c_str();
+		Play::DrawDebugText({ 100, 100 }, icle);
 	}
 	//adds scores to file and deletes array
 	void ExitFunction(int linecount) {

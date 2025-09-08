@@ -8,3 +8,5 @@ void StepFrame(float elapsedTime);
 void assignArray();
 int lineCount();
 void ExitFunction(int linecount);
+int* resizeArray(int* arr, int oldSize, int newSize);
+void createScoreArray();
