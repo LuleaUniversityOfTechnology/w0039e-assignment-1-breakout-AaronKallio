@@ -21,7 +21,7 @@ bool MainGameUpdate( float elapsedTime )
 }
 // Gets called once when the player quits the game 
 int MainGameExit(void){
-	int linecount = lineCount();
+	int linecount = currentLines();
 	ExitFunction(linecount);
 	Play::DestroyManager();
 	return PLAY_OK;

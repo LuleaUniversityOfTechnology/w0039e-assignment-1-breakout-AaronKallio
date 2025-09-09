@@ -40,8 +40,12 @@ int* resizeArray(int* arr, int oldSize, int newSize) {
 
 
 int linecount = lineCount();
+int currentLines() {
+	return linecount;
+}
+
 //creates dynamic array
-int* highscoresArray = new int[linecount];
+int* highscoresArray = new int[linecount+1];
 
 int displayArray [5];
 
@@ -112,10 +116,23 @@ void SpawnBall() {
 				//	sort(highscoresArray, highscoresArray + linecount, comp);
 				//}
 				//sort(highscoresArray, highscoresArray + linecount, comp);
+				if (linecount == 0) {
 
-				highscoresArray = resizeArray(highscoresArray,linecount, linecount + 1);
+					
+					highscoresArray[0] = currentScore;
+					std::string test = to_string(highscoresArray[0]);
+					const char* icle = test.c_str();
+					Play::DrawDebugText({ 100, 60 }, icle);
+				}
+				else{
+					highscoresArray = resizeArray(highscoresArray, linecount, linecount + 1);
+					highscoresArray[linecount] = currentScore;
+					std::string test = to_string(highscoresArray[0]);
+					const char* icle = test.c_str();
+					Play::DrawDebugText({ 100, 60 }, icle);
+
+				}
 				linecount++;
-				highscoresArray[linecount - 1] = currentScore;
 				sort(highscoresArray, highscoresArray + linecount, comp);
 				int displayScoreAmount;
 				if (linecount < 5) {
@@ -192,14 +209,29 @@ void SpawnBall() {
 		std::string test = std::to_string(linecount);
 		const char* icle = test.c_str();
 		Play::DrawDebugText({ 100, 100 }, icle);
+
+		std::string text;
+		for (int k = 0; k < linecount; k++) {
+			text += " " + to_string(highscoresArray[k]);
+
+		}
+		Play::DrawDebugText({ 200, 200 }, text.c_str());
+
+
 	}
 	//adds scores to file and deletes array
 	void ExitFunction(int linecount) {
 		sort(highscoresArray, highscoresArray + linecount, comp);
+		std::string text;
 		fstream scoreFile("scores.txt");
-		for (int k = 0; k < linecount-1; k++) {
-			scoreFile << highscoresArray[k]  << "\n";
+		for (int k = 0; k < linecount; k++) {
+			scoreFile << to_string(highscoresArray[k])  << "\n";
+			text +=" " + to_string(highscoresArray[k]);
+			//scoreFile << "why" << "\n";
+
 		}
+		//scoreFile << text << "\n";
+		
 		scoreFile.close();
 		delete highscoresArray;
 	}
