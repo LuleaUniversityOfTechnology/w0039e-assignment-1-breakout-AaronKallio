@@ -206,17 +206,7 @@ void SpawnBall() {
 		Play::DrawDebugText({ 930, 40 }, scoreOutput5);
 		Play::DrawDebugText({ 30, 40 }, scoreOutput);
 
-		std::string test = std::to_string(linecount);
-		const char* icle = test.c_str();
-		Play::DrawDebugText({ 100, 100 }, icle);
-
-		std::string text;
-		for (int k = 0; k < linecount; k++) {
-			text += " " + to_string(highscoresArray[k]);
-
-		}
-		Play::DrawDebugText({ 200, 200 }, text.c_str());
-
+		
 
 	}
 	//adds scores to file and deletes array
